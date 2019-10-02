@@ -111,7 +111,10 @@ while page <= total_page:
             source_date1.append(source_date)
             
             # Price
-            price       = soup.find_all('div',{'class':'price'})[num].find('span').text
+            try:
+                price = soup.find_all('div',{'class':'price'})[num].find('span').text
+            except IndexError:
+                price = "#NA"
             price1.append(price)
             
             # No of Bedroom Available
