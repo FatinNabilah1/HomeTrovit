@@ -30,9 +30,8 @@ page        = 1
 total_page  = 0
 total_item  = 0
 
-#r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/sug.0/isUserSearch.1/origin.2/order_by.relevance/city.Cheras/price_min.400000/price_max.500000/rooms_min.2/property_type.Apartment/')
-r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.11/rooms_min.0/bathrooms_min.0/order_by.source_date/resultsPerPage.25/tracking.%7B%22acc%22%3A2404%2C%22c%22%3A920185567%2C%22a%22%3A46360633192%2C%22k%22%3A297024398149%2C%22d%22%3A%22c%22%2C%22gclid%22%3A%22EAIaIQobChMIrc-uv4f95AIVg5KPCh0F-QJSEAAYAyAAEgIEtPD_BwE%22%7D/isUserSearch.1/page.1')
-soup = bs4.BeautifulSoup(r.text,'xml')
+r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/sug.0/isUserSearch.1/origin.2/order_by.relevance/city.Cheras/price_min.100000/price_max.500000/property_type.Apartment/')
+soup = bs4.BeautifulSoup(r.text,'html.parser')
 
 ##retrieve and set the total page number        
 total_item = soup.find('div',{'class':'results-counter js-results-counter'}).find('span').text
@@ -45,8 +44,7 @@ if total_page > 100:
 #start loop
 #loop per page number
 while page <= total_page:
-        #r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.2/price_min.400000/price_max.500000/rooms_min.2/bathrooms_min.0/property_type.Apartment/city.Cheras/order_by.relevance/resultsPerPage.25/isUserSearch.1/page.'+str(page))
-        r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.11/rooms_min.0/bathrooms_min.0/order_by.source_date/resultsPerPage.25/tracking.%7B%22acc%22%3A2404%2C%22c%22%3A920185567%2C%22a%22%3A46360633192%2C%22k%22%3A297024398149%2C%22d%22%3A%22c%22%2C%22gclid%22%3A%22EAIaIQobChMIrc-uv4f95AIVg5KPCh0F-QJSEAAYAyAAEgIEtPD_BwE%22%7D/isUserSearch.1/page.'+str(page))
+        r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.2/price_min.100000/price_max.500000/bathrooms_min.0/property_type.Apartment/city.Cheras/order_by.relevance/resultsPerPage.25/isUserSearch.1/page.'+str(page))
         soup = bs4.BeautifulSoup(r.text,'xml')
         
         #check and set the item number
@@ -64,6 +62,7 @@ while page <= total_page:
             # Title
             try:
                 title = soup.find_all('a',{'class':'js-item-title'})[num].text
+                title = title.replace(',','')
             except IndexError:
                 title = "#NA"
             title1.append(title)
@@ -71,6 +70,7 @@ while page <= total_page:
             # Address or Zone
             try:
                 address = soup.find_all('div',{'class':'details'})[num].find('span').text
+                address = address.replace(',','')
             except IndexError:
                 address = "#NA"
             address1.append(address)
@@ -78,6 +78,7 @@ while page <= total_page:
             # Property Details
             try:
                 detail = soup.find_all('div',{'class':'description'})[num].find('p').text
+                detail = detail.replace(',','')
             except IndexError:
                 detail = "#NA"
             detail1.append(detail)
@@ -85,6 +86,7 @@ while page <= total_page:
             # URL
             try:
                 url = soup.find_all('a',{'class':'js-item-title'})[num].get('href')
+                url = url.replace(',','')
             except IndexError:
                 url = "#NA"
             url1.append(url)
@@ -92,6 +94,7 @@ while page <= total_page:
             # Image
             try:
                 image   = soup.find_all(itemprop="image")[num].get("src")
+                image = image.replace(',','')
             except IndexError:
                 image   = "#NA"
             image1.append(image)
@@ -99,6 +102,7 @@ while page <= total_page:
             # Source Info
             try:
                 source_info = soup.find_all('small',{'class':'source'})[num].text
+                source_info = source_info.replace(',','')
             except IndexError:
                 source_info = "#NA"
             source_info1.append(source_info)
@@ -106,6 +110,7 @@ while page <= total_page:
             # Source Date or Published Date
             try:
                 source_date = soup.find_all('small',{'class':'date'})[num].text
+                source_date = source_date.replace(',','')
             except IndexError:
                 source_date = "#NA"
             source_date1.append(source_date)
@@ -113,16 +118,15 @@ while page <= total_page:
             # Price
             try:
                 price = soup.find_all('div',{'class':'price'})[num].find('span').text
+                price = price.replace(',','')
             except IndexError:
                 price = "#NA"
             price1.append(price)
             
             # No of Bedroom Available
             try:
-                if soup.find_all('div',{'class':'property'})[num].find('span') is not None:
-                    nofbedroom  = soup.find_all('div',{'class':'property'})[num].find('span').text
-                else:
-                    nofbedroom = "#NA"
+                nofbedroom  = soup.find_all(itemprop="numberOfRooms")[num].text
+                nofbedroom = nofbedroom.replace(',','')
             except IndexError:
                 nofbedroom = "#NA"
             nofbedroom1.append(nofbedroom)
@@ -130,6 +134,8 @@ while page <= total_page:
             # Floor Size or Property Size
             try:
                 floorsize   = soup.find_all(itemprop="floorSize")[num].get("content")
+                floorsize = floorsize.replace(',','')
+                num9 += 1
             except IndexError:
                 floorsize   = "#NA"
             
@@ -137,7 +143,7 @@ while page <= total_page:
            
             num += 1
             
-        num = 0
+        num   = 0
         page += 1
         
         # Saving all the data into Cheras_HomeTrovit_raw.xls file
@@ -164,5 +170,5 @@ while page <= total_page:
                                   'No of Bedroom Available': nofbedroom1,
                                   'Floor Size or Property Size sq. feet': floorsize1})[cols]
 
-        dataframe.to_excel('Cheras_HomeTrovit_raw.xls')
+        dataframe.to_csv('Cheras_HomeTrovit_raw.csv')
         
