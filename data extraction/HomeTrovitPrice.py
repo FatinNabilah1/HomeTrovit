@@ -4,7 +4,9 @@ Created on Sun Sept 29 2019
 Author: WQD190011
 
 Home Trovit
-Kuala Lumpur
+Cheras
+min 100k
+floor size > 500 sq
 
 """
 import bs4
@@ -30,7 +32,7 @@ page        = 1
 total_page  = 0
 total_item  = 0
 
-r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/sug.0/isUserSearch.1/origin.2/order_by.relevance/city.Cheras/price_min.100000/price_max.500000/property_type.Apartment/')
+r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/sug.0/isUserSearch.1/origin.2/order_by.relevance/city.Cheras/price_min.100000/rooms_min.1/area_min.500/property_type.Apartment/')
 soup = bs4.BeautifulSoup(r.text,'html.parser')
 
 ##retrieve and set the total page number        
@@ -44,7 +46,7 @@ if total_page > 100:
 #start loop
 #loop per page number
 while page <= total_page:
-        r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.2/price_min.100000/price_max.500000/bathrooms_min.0/property_type.Apartment/city.Cheras/order_by.relevance/resultsPerPage.25/isUserSearch.1/page.'+str(page))
+        r    = requests.get('https://homes.trovit.my/index.php/cod.search_homes/type.1/what_d.kuala%20lumpur/origin.2/price_min.100000/rooms_min.1/bathrooms_min.0/property_type.Apartment/city.Cheras/area_min.500/order_by.relevance/resultsPerPage.25/isUserSearch.1/page.'+str(page))
         soup = bs4.BeautifulSoup(r.text,'xml')
         
         #check and set the item number
@@ -70,7 +72,13 @@ while page <= total_page:
             # Address or Zone
             try:
                 address = soup.find_all('div',{'class':'details'})[num].find('span').text
-                address = address.replace(',','')
+                if "Cheras" in address:
+                    address = "Cheras"
+                elif "Kuala Lumpur" in address:
+                    address = "Kuala Lumpur"
+                else:
+                    address = "Selangor"
+                address = address.replace(',','')    
             except IndexError:
                 address = "#NA"
             address1.append(address)
@@ -135,7 +143,6 @@ while page <= total_page:
             try:
                 floorsize   = soup.find_all(itemprop="floorSize")[num].get("content")
                 floorsize = floorsize.replace(',','')
-                num9 += 1
             except IndexError:
                 floorsize   = "#NA"
             
