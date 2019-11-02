@@ -72,12 +72,6 @@ while page <= total_page:
             # Address or Zone
             try:
                 address = soup.find_all('div',{'class':'details'})[num].find('span').text
-                if "Cheras" in address:
-                    address = "Cheras"
-                elif "Kuala Lumpur" in address:
-                    address = "Kuala Lumpur"
-                else:
-                    address = "Selangor"
                 address = address.replace(',','')    
             except IndexError:
                 address = "#NA"
