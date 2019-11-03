@@ -171,5 +171,5 @@ while page <= total_page:
                                   'No of Bedroom Available': nofbedroom1,
                                   'Floor Size or Property Size sq. feet': floorsize1})[cols]
 
-        dataframe.to_csv('Cheras_HomeTrovit_raw.csv')
+        dataframe.to_csv('Cheras_HomeTrovit_raw.csv', index=False)
         
