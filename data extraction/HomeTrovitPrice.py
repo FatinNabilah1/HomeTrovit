@@ -113,6 +113,9 @@ while page <= total_page:
             try:
                 source_date = soup.find_all('small',{'class':'date'})[num].text
                 source_date = source_date.replace(',','')
+                source_date = source_date.replace('+','')
+                source_date = source_date.replace('days ago','')  
+                source_date = source_date.replace(' ','') 
             except IndexError:
                 source_date = "#NA"
             source_date1.append(source_date)
@@ -149,27 +152,27 @@ while page <= total_page:
         
         # Saving all the data into Cheras_HomeTrovit_raw.xls file
         
-        cols = ['Title', 
-                'Address or Zone', 
-                'Property Details',
-                'Url', 
-                'Image', 
-                'Source Info', 
-                'Source Date or Published Date (Days)', 
-                'Price',
-                'No of Bedroom Available', 
-                'Floor Size or Property Size sq. feet']
+        cols = ['title', 
+                'location', 
+                'property_details',
+                'url', 
+                'image', 
+                'source_info', 
+                'published_days', 
+                'price',
+                'no_of_bedroom', 
+                'property_size']
 
-        dataframe = pd.DataFrame({'Title': title1,
-                                  'Address or Zone': address1,
-                                  'Property Details': detail1,
-                                  'Url': url1,
-                                  'Image': image1,
-                                  'Source Info': source_info1,
-                                  'Source Date or Published Date (Days)': source_date1,
-                                  'Price': price1,
-                                  'No of Bedroom Available': nofbedroom1,
-                                  'Floor Size or Property Size sq. feet': floorsize1})[cols]
+        dataframe = pd.DataFrame({'title': title1,
+                                  'location': address1,
+                                  'property_details': detail1,
+                                  'url': url1,
+                                  'image': image1,
+                                  'source_info': source_info1,
+                                  'published_days': source_date1,
+                                  'price': price1,
+                                  'no_of_bedroom': nofbedroom1,
+                                  'property_size': floorsize1})[cols]
 
         dataframe.to_csv('Cheras_HomeTrovit_raw.csv', index=False)
         
