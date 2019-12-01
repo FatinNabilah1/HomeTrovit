@@ -12,7 +12,7 @@ import numpy as np
 
 num = 0
 
-dataframe = pd.read_csv(r'D:\GitHub\WXD7005\HomeTrovit\data extraction\Cheras_HomeTrovit_raw.csv')
+dataframe = pd.read_csv(r'D:\GitHub\WXD7005\HomeTrovit\data extraction\HomeTrovit_raw.csv')
 dataframe_clean = dataframe
 
 #Replace "MYR" in the "Price" column value
@@ -24,22 +24,33 @@ dataframe_clean.dropna(subset=['price'], inplace=True)
 
 #Convert “No of Bedroom Available” to numeric values
 dataframe_clean['no_of_bedroom'] = pd.to_numeric(dataframe_clean['no_of_bedroom'], errors='coerce')
+#Convert “No of bathroom” to numeric values
+dataframe_clean['no_of_bathroom'] = pd.to_numeric(dataframe_clean['no_of_bathroom'], errors='coerce')
 #remove a row or a column from a dataframe which has a NaN or no values in it
 dataframe_clean.dropna(subset=['no_of_bedroom'], inplace=True)
+dataframe_clean.dropna(subset=['no_of_bathroom'], inplace=True)
 
 #Convert “Floor Size or Property Size sq. feet” to numeric values
 dataframe_clean['property_size'] = pd.to_numeric(dataframe_clean['property_size'], errors='coerce')
 #remove a row or a column from a dataframe which has a NaN or no values in it
 dataframe_clean.dropna(subset=['property_size'], inplace=True)
 
+
 #Reassign the Zone
 a = dataframe_clean['location']
-cheras = a.str.contains('Cheras')
-kuala_lumpur = a.str.contains('Kuala Lumpur')
-selangor = a.str.contains('Selangor')
-dataframe_clean['location'] = pd.np.where(cheras, 'Cheras',
-                                               pd.np.where(kuala_lumpur, 'Kuala Lumpur',
-                                                        pd.np.where(selangor, 'Selangor','')))
+dataframe_clean['district'] = pd.np.where(a.str.contains('Ampang'), 'Ampang',
+                              pd.np.where(a.str.contains('Batu Caves'), 'Batu Caves',
+                              pd.np.where(a.str.contains('Cheras'), 'Cheras',
+							  pd.np.where(a.str.contains('Damansara'), 'Damansara',
+							  pd.np.where(a.str.contains('Gombak'), 'Gombak',
+							  pd.np.where(a.str.contains('Hulu Kelang'), 'Hulu Kelang',
+							  pd.np.where(a.str.contains('Kepong'), 'Kepong',
+							  pd.np.where(a.str.contains('Kuala Lumpur'), 'Kuala Lumpur',
+							  pd.np.where(a.str.contains('Petaling Jaya'), 'Petaling Jaya',
+							  pd.np.where(a.str.contains('Petaling'), 'Petaling',
+							  pd.np.where(a.str.contains('Setapak'), 'Setapak',
+							  pd.np.where(a.str.contains('Sungai Besi'), 'Sungai Besi',
+							  pd.np.where(a.str.contains('Setapak'), 'Setapak','Other District or State')))))))))))))
 
 #remove a row or a column from a dataframe which has a NaN or no values in it
 dataframe_clean['location'].replace('', np.nan, inplace=True)
@@ -50,17 +61,18 @@ dataframe_clean['price_per_square'] = dataframe_clean['price'] / dataframe_clean
 
 
 #drop unneccessary attributes ; 'Url', 'Image', 'Source Info'
-dataframe_clean.drop(['url', 'image', 'source_info'], axis=1, inplace=True)
+dataframe_clean.drop(['url', 'image', 'source_info', 'published_days','location', 'title', 'property_details'], axis=1, inplace=True)
 
 #filter for data property size < 3000 sq feet and price < 2000000
 #other remove from dataframe
 #other data is irrelevant and lack of data for size > 3000 sq feet and price > 2000000
-dataframe_clean = dataframe_clean[dataframe_clean['property_size'] < 3000]
-dataframe_clean = dataframe_clean[dataframe_clean['price'] < 2000000]
-dataframe_clean.reset_index(inplace=True, drop=True)
+#dataframe_clean = dataframe_clean[dataframe_clean['property_size'] < 3000]
+#dataframe_clean = dataframe_clean[dataframe_clean['price'] < 2000000]
+#dataframe_clean.reset_index(inplace=True, drop=True)
 
 #drop duplicate data
 dataframe_clean.drop_duplicates(keep=False, inplace=True)
+dataframe_clean.drop_duplicates(subset=None, keep='first', inplace=False)
 
 ##Save clean data to csv file
-dataframe_clean.to_csv('Cheras_HomeTrovit_clean.csv', index=False)
+dataframe_clean.to_csv('HomeTrovit_clean.csv', index=False)
