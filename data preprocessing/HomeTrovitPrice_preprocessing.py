@@ -12,7 +12,7 @@ import numpy as np
 
 num = 0
 
-dataframe = pd.read_csv(r'D:\GitHub\WXD7005\HomeTrovit\data extraction\HomeTrovit_raw.csv')
+dataframe = pd.read_csv('D:\GitHub\WXD7005\HomeTrovit\data extraction\HomeTrovit_raw.csv')
 dataframe_clean = dataframe
 
 #Replace "MYR" in the "Price" column value
@@ -50,7 +50,7 @@ dataframe_clean['district'] = pd.np.where(a.str.contains('Ampang'), 'Ampang',
 							  pd.np.where(a.str.contains('Petaling'), 'Petaling',
 							  pd.np.where(a.str.contains('Setapak'), 'Setapak',
 							  pd.np.where(a.str.contains('Sungai Besi'), 'Sungai Besi',
-							  pd.np.where(a.str.contains('Setapak'), 'Setapak','Other District or State')))))))))))))
+							  pd.np.where(a.str.contains('Setapak'), 'Setapak','Others')))))))))))))
 
 #remove a row or a column from a dataframe which has a NaN or no values in it
 dataframe_clean['location'].replace('', np.nan, inplace=True)
@@ -67,11 +67,11 @@ dataframe_clean.drop(['url', 'image', 'source_info', 'published_days','location'
 #other remove from dataframe
 #other data is irrelevant and lack of data for size > 3000 sq feet and price > 2000000
 #dataframe_clean = dataframe_clean[dataframe_clean['property_size'] < 3000]
-#dataframe_clean = dataframe_clean[dataframe_clean['price'] < 2000000]
+dataframe_clean = dataframe_clean[dataframe_clean['price'] < 1000000]
 #dataframe_clean.reset_index(inplace=True, drop=True)
 
 #drop duplicate data
-dataframe_clean.drop_duplicates(keep=False, inplace=True)
+#dataframe_clean.drop_duplicates(keep=False, inplace=True)
 dataframe_clean.drop_duplicates(subset=None, keep='first', inplace=False)
 
 ##Save clean data to csv file
