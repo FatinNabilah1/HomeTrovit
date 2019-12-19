@@ -12,4 +12,16 @@ Predicting house prices using :
 
 Code could be found in folder :
 
+data extraction
+   - HometTrovitPrice.py
+   - HomeTrovit_raw.csv
+
+data preprocessing
+   - HomeTrovitPrice_preprocessing.py
+   - HomeTrovit_clean.csv
+  
+data explore (generation of scatter plot and bar chart)
+   - explore_data.py
+   - tableu (https://eu-west-1a.online.tableau.com/#/site/analysis/workbooks/236261?:origin=card_share_link)
+
 Thank you
