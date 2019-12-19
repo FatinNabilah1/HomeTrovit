@@ -3,7 +3,7 @@ House Price Prediction (WQD7005 Data Mining Project)
 
 The data was retrieved and crawl from HomeTrovit website (focus on Kuala Lumpur state only)
 
---Analysis and Prediction Using SAS Miner Enterprise--
+--Analysis and Prediction Using SAS Enterprise Miner--
 
 Predicting house prices using :
    - Linear Regression
@@ -12,7 +12,7 @@ Predicting house prices using :
    
 Other related Document & Presentation slide can be found in "Task folder"
 
-Code could be found in folder :
+Code and data could be found in folder :
 
    - data extraction
       - HometTrovitPrice.py
