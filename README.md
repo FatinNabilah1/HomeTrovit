@@ -12,7 +12,7 @@ Predicting house prices using :
    
 Other related Document & Presentation slide can be found in "Task folder"
 
-Code could be found in folder :
+Code and data could be found in folder :
 
    - data extraction
       - HometTrovitPrice.py
