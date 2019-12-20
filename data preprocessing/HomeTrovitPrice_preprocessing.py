@@ -45,12 +45,12 @@ dataframe_clean['district'] = pd.np.where(a.str.contains('Ampang'), 'Ampang',
 							  pd.np.where(a.str.contains('Gombak'), 'Gombak',
 							  pd.np.where(a.str.contains('Hulu Kelang'), 'Hulu Kelang',
 							  pd.np.where(a.str.contains('Kepong'), 'Kepong',
-							  pd.np.where(a.str.contains('Kuala Lumpur'), 'Kuala Lumpur',
+							  pd.np.where(a.str.contains('Setapak'), 'Setapak',
+							  pd.np.where(a.str.contains('Sri Petaling'), 'Petaling',
 							  pd.np.where(a.str.contains('Petaling Jaya'), 'Petaling Jaya',
-							  pd.np.where(a.str.contains('Petaling'), 'Petaling',
 							  pd.np.where(a.str.contains('Setapak'), 'Setapak',
 							  pd.np.where(a.str.contains('Sungai Besi'), 'Sungai Besi',
-							  pd.np.where(a.str.contains('Setapak'), 'Setapak','Others')))))))))))))
+							  pd.np.where(a.str.contains('Kuala Lumpur'), 'Kuala Lumpur','Others')))))))))))))
 
 #remove a row or a column from a dataframe which has a NaN or no values in it
 dataframe_clean['location'].replace('', np.nan, inplace=True)
